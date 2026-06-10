@@ -6,6 +6,8 @@
     <AccessibleZoneTabOrder />
     <AnimationOnByDefault />
     <AutoCreateAndUpdateDSDPhoneLayouts />
+    <BasicButtonObject />
+    <CollapsiblePane />
     <CustomReferenceLineTooltips />
     <MarkAnimation />
     <ObjectModelEncapsulateLegacy />
@@ -15,8 +17,11 @@
     <SchemaViewerObjectModel />
     <SetMembershipControl />
     <SheetIdentifierTracking />
+    <SortTagCleanup />
     <_.fcp.VConnDownstreamExtractsWithWarnings.true...VConnDownstreamExtractsWithWarnings />
     <WindowsPersistSimpleIdentifiers />
+    <WorksheetBackgroundTransparency />
+    <ZoneVisibilityControl />
   </document-format-change-manifest>
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
@@ -197,6 +202,14 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+      <column datatype='string' name='[:Measure Names]' role='dimension' type='nominal'>
+        <aliases>
+          <alias key='&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:sst_today:qk]&quot;' value='Temperatura del Mar (del día) en ºC' />
+          <alias key='&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:wind_max_fortnight:qk]&quot;' value='Viento Máximo Quincenal' />
+          <alias key='&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]&quot;' value='KPI Alerta Temperatura Eleveda' />
+          <alias key='&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]&quot;' value='KPI Eventos Extremos' />
+        </aliases>
+      </column>
       <column caption='KPI_Early_Warning' datatype='integer' name='[Calculation_1818327804514304]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='IF [sst_today] &gt; 28 AND [wind_max_fortnight] &gt; 0 THEN 1&#13;&#10;ELSE 0&#13;&#10;END' />
       </column>
@@ -205,6 +218,10 @@
       </column>
       <column caption='KPI_Extreme_Events' datatype='integer' name='[Calculation_1842791846010880]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 AND [zonal_winds] &gt; 0 THEN 1 ELSE 0 END' />
+        <aliases>
+          <alias key='0' value='Condiciones Normales/Seguras' />
+          <alias key='1' value='Eventos Extremos (Crisis)' />
+        </aliases>
       </column>
       <column caption='Porcentaje_Eventos_Extremos' datatype='real' name='[Calculation_1842791848132609]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]) / TOTAL(COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]))'>
@@ -232,6 +249,7 @@
       <column-instance column='[complete_date]' derivation='None' name='[none:complete_date:qk]' pivot='key' type='quantitative' />
       <column-instance column='[wind_max_fortnight]' derivation='Stdev' name='[std:wind_max_fortnight:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1818327804514304]' derivation='Sum' name='[sum:Calculation_1818327804514304:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Calculation_1818328026869763]' derivation='Sum' name='[sum:Calculation_1818328026869763:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1842791846010880]' derivation='Sum' name='[sum:Calculation_1842791846010880:qk]' pivot='key' type='quantitative' />
       <column-instance column='[wind_max_fortnight]' derivation='Sum' name='[sum:wind_max_fortnight:qk]' pivot='key' type='quantitative' />
       <extract _.fcp.VConnDownstreamExtractsWithWarnings.true...user-specific='false' count='-1' enabled='true' object-id='' units='records'>
@@ -394,11 +412,11 @@
             <map to='#b9ca5d'>
               <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:qk]&quot;</bucket>
             </map>
-            <map to='#b9ca5d'>
-              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]&quot;</bucket>
-            </map>
             <map to='#cf3e53'>
               <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:sst_today:qk]&quot;</bucket>
+            </map>
+            <map to='#cf3e53'>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]&quot;</bucket>
             </map>
             <map to='#f28e2b'>
               <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cnt:wind_max_fortnight:qk]&quot;</bucket>
@@ -408,6 +426,9 @@
             </map>
             <map to='#f28e2b'>
               <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:wind_max_fortnight:qk]&quot;</bucket>
+            </map>
+            <map to='#f3a546'>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]&quot;</bucket>
             </map>
           </encoding>
           <encoding attr='color' field='[none:Calculation_1842791846010880:ok]' type='palette'>
@@ -451,111 +472,7 @@
     </datasource>
   </datasources>
   <worksheets>
-    <worksheet name=' Impacto de Eventos Extremos en el Histórico Global\n(Cruce de Temperatura &gt; 28°C y Viento Zonal &gt; 0 m/s)'>
-      <table>
-        <view>
-          <datasources>
-            <datasource caption='table_atmospheric_oceanic_dataset' name='federated.0pqz8d11bxu1uk1a8ra3l1jztibx' />
-          </datasources>
-          <datasource-dependencies datasource='federated.0pqz8d11bxu1uk1a8ra3l1jztibx'>
-            <column caption='KPI_Extreme_Events' datatype='integer' name='[Calculation_1842791846010880]' role='measure' type='quantitative'>
-              <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 AND [zonal_winds] &gt; 0 THEN 1 ELSE 0 END' />
-            </column>
-            <column caption='Porcentaje_Eventos_Extremos' datatype='real' name='[Calculation_1842791848132609]' role='measure' type='quantitative'>
-              <calculation class='tableau' formula='COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]) / TOTAL(COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]))'>
-                <table-calc ordering-type='Rows' />
-              </calculation>
-            </column>
-            <column-instance column='[__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2:qk]' pivot='key' type='quantitative' />
-            <column caption='table_atmospheric_oceanic_dataset.csv' datatype='table' name='[__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]' role='measure' type='quantitative' />
-            <column-instance column='[Calculation_1842791848132609]' derivation='User' name='[cum:usr:Calculation_1842791848132609:qk:2]' pivot='key' type='quantitative'>
-              <table-calc ordering-type='Rows' />
-            </column-instance>
-            <column-instance column='[Calculation_1842791846010880]' derivation='None' name='[none:Calculation_1842791846010880:ok]' pivot='key' type='ordinal' />
-            <column caption='Sst Avg Fortnight' datatype='real' datatype-customized='true' name='[sst_avg_fortnight]' role='dimension' type='ordinal' />
-            <column aggregation='CountD' caption='Zonal Winds' datatype='real' datatype-customized='true' name='[zonal_winds]' role='measure' type='quantitative' />
-          </datasource-dependencies>
-          <aggregation value='true' />
-        </view>
-        <style>
-          <style-rule element='cell'>
-            <format attr='text-format' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='*0.00%' />
-            <format attr='text-format' data-class='total' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='p0.00%' />
-            <format attr='text-format' data-class='subtotal' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='n#,##0.0000000000;-#,##0.0000000000' />
-          </style-rule>
-          <style-rule element='label'>
-            <format attr='text-format' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='' />
-          </style-rule>
-        </style>
-        <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Pie' />
-            <mark-sizing mark-sizing-setting='marks-scaling-off' />
-            <encodings>
-              <color column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:ok]' />
-              <wedge-size column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[__tableau_internal_object_id__].[cnt:table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2:qk]' />
-              <text column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' />
-            </encodings>
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-labels-show' value='true' />
-                <format attr='mark-labels-cull' value='true' />
-                <format attr='size' value='1.8790607452392578' />
-              </style-rule>
-            </style>
-          </pane>
-        </panes>
-        <rows />
-        <cols />
-      </table>
-      <simple-id uuid='{74871561-0E9A-4B62-906F-90C2346328D9}' />
-    </worksheet>
-    <worksheet name='Alerta por temperatura elevada'>
-      <table>
-        <view>
-          <datasources>
-            <datasource caption='table_atmospheric_oceanic_dataset' name='federated.0pqz8d11bxu1uk1a8ra3l1jztibx' />
-          </datasources>
-          <datasource-dependencies datasource='federated.0pqz8d11bxu1uk1a8ra3l1jztibx'>
-            <column caption='kpi_temp_risk' datatype='integer' name='[Calculation_1818328026869763]' role='measure' type='quantitative'>
-              <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 THEN 1&#13;&#10;ELSE 0&#13;&#10;END' />
-            </column>
-            <column caption='Complete Date' datatype='date' name='[complete_date]' role='dimension' type='ordinal' />
-            <column caption='Sst Avg Fortnight' datatype='real' datatype-customized='true' name='[sst_avg_fortnight]' role='dimension' type='ordinal' />
-            <column-instance column='[Calculation_1818328026869763]' derivation='Sum' name='[sum:Calculation_1818328026869763:qk]' pivot='key' type='quantitative' />
-            <column-instance column='[complete_date]' derivation='Month-Trunc' name='[tmn:complete_date:qk]' pivot='key' type='quantitative' />
-          </datasource-dependencies>
-          <aggregation value='true' />
-        </view>
-        <style>
-          <style-rule element='axis'>
-            <encoding attr='space' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]' field-type='quantitative' max='1663' min='0' range-type='fixed' scope='rows' type='space' />
-            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]' scope='rows' value='Número de Alertas' />
-            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[tmn:complete_date:qk]' scope='cols' value='Fecha' />
-          </style-rule>
-        </style>
-        <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-            <style>
-              <style-rule element='mark'>
-                <format attr='mark-color' value='#e15759' />
-              </style-rule>
-            </style>
-          </pane>
-        </panes>
-        <rows>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]</rows>
-        <cols>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[tmn:complete_date:qk]</cols>
-      </table>
-      <simple-id uuid='{FBC09C56-451A-4322-A9AC-1ADE9652DA27}' />
-    </worksheet>
-    <worksheet name='Análisis de Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
+    <worksheet name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
       <table>
         <view>
           <datasources>
@@ -569,6 +486,12 @@
             <column-instance column='[complete_date]' derivation='Day-Trunc' name='[tdy:complete_date:qk]' pivot='key' type='quantitative' />
             <column caption='Wind Max Fortnight' datatype='real' datatype-customized='true' name='[wind_max_fortnight]' role='dimension' type='ordinal' />
           </datasource-dependencies>
+          <manual-sort column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:wind_max_fortnight:qk]&quot;</bucket>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:sst_today:qk]&quot;</bucket>
+            </dictionary>
+          </manual-sort>
           <filter class='quantitative' column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:sst_today:qk]' included-values='non-null' />
           <slices>
             <column>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[avg:sst_today:qk]</column>
@@ -657,7 +580,7 @@
       </table>
       <simple-id uuid='{3A3F7A72-D1A4-40B7-8632-7D6763985A73}' />
     </worksheet>
-    <worksheet name='Hoja 5'>
+    <worksheet name='KPI Alerta por Intensidad del Viento '>
       <table>
         <view>
           <datasources>
@@ -670,6 +593,9 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='cell'>
+            <format attr='text-align' value='left' />
+          </style-rule>
           <style-rule element='label'>
             <format attr='font-size' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[std:zonal_winds:qk]' value='11' />
           </style-rule>
@@ -699,7 +625,176 @@
       </table>
       <simple-id uuid='{95566989-5564-4C47-A5DF-5ACE7477CD14}' />
     </worksheet>
+    <worksheet name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='table_atmospheric_oceanic_dataset' name='federated.0pqz8d11bxu1uk1a8ra3l1jztibx' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0pqz8d11bxu1uk1a8ra3l1jztibx'>
+            <column caption='KPI_Extreme_Events' datatype='integer' name='[Calculation_1842791846010880]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 AND [zonal_winds] &gt; 0 THEN 1 ELSE 0 END' />
+              <aliases>
+                <alias key='0' value='Condiciones Normales/Seguras' />
+                <alias key='1' value='Eventos Extremos (Crisis)' />
+              </aliases>
+            </column>
+            <column caption='Porcentaje_Eventos_Extremos' datatype='real' name='[Calculation_1842791848132609]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]) / TOTAL(COUNT([__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]))'>
+                <table-calc ordering-type='Rows' />
+              </calculation>
+            </column>
+            <column-instance column='[__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2:qk]' pivot='key' type='quantitative' />
+            <column caption='table_atmospheric_oceanic_dataset.csv' datatype='table' name='[__tableau_internal_object_id__].[table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2]' role='measure' type='quantitative' />
+            <column-instance column='[Calculation_1842791848132609]' derivation='User' name='[cum:usr:Calculation_1842791848132609:qk:2]' pivot='key' type='quantitative'>
+              <table-calc ordering-type='Rows' />
+            </column-instance>
+            <column-instance column='[Calculation_1842791846010880]' derivation='None' name='[none:Calculation_1842791846010880:ok]' pivot='key' type='ordinal' />
+            <column caption='Sst Avg Fortnight' datatype='real' datatype-customized='true' name='[sst_avg_fortnight]' role='dimension' type='ordinal' />
+            <column aggregation='CountD' caption='Zonal Winds' datatype='real' datatype-customized='true' name='[zonal_winds]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <manual-sort column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:ok]' direction='ASC'>
+            <dictionary>
+              <bucket>0</bucket>
+              <bucket>1</bucket>
+            </dictionary>
+          </manual-sort>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='text-format' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='*0.00%' />
+            <format attr='text-format' data-class='total' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='p0.00%' />
+            <format attr='text-format' data-class='subtotal' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='n#,##0.0000000000;-#,##0.0000000000' />
+          </style-rule>
+          <style-rule element='label'>
+            <format attr='text-format' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' value='' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Pie' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:ok]' />
+              <wedge-size column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[__tableau_internal_object_id__].[cnt:table_atmospheric_oceanic_dataset.csv_605F377FB68A41DAB98FD1F5E59B64F2:qk]' />
+              <text column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[cum:usr:Calculation_1842791848132609:qk:2]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='size' value='1.8790607452392578' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{74871561-0E9A-4B62-906F-90C2346328D9}' />
+    </worksheet>
+    <worksheet name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='table_atmospheric_oceanic_dataset' name='federated.0pqz8d11bxu1uk1a8ra3l1jztibx' />
+          </datasources>
+          <datasource-dependencies datasource='federated.0pqz8d11bxu1uk1a8ra3l1jztibx'>
+            <column caption='kpi_temp_risk' datatype='integer' name='[Calculation_1818328026869763]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 THEN 1&#13;&#10;ELSE 0&#13;&#10;END' />
+            </column>
+            <column caption='KPI_Extreme_Events' datatype='integer' name='[Calculation_1842791846010880]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='IF [sst_avg_fortnight] &gt; 28 AND [zonal_winds] &gt; 0 THEN 1 ELSE 0 END' />
+              <aliases>
+                <alias key='0' value='Condiciones Normales/Seguras' />
+                <alias key='1' value='Eventos Extremos (Crisis)' />
+              </aliases>
+            </column>
+            <column caption='Complete Date' datatype='date' name='[complete_date]' role='dimension' type='ordinal' />
+            <column caption='Sst Avg Fortnight' datatype='real' datatype-customized='true' name='[sst_avg_fortnight]' role='dimension' type='ordinal' />
+            <column-instance column='[Calculation_1818328026869763]' derivation='Sum' name='[sum:Calculation_1818328026869763:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1842791846010880]' derivation='Sum' name='[sum:Calculation_1842791846010880:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[complete_date]' derivation='Month-Trunc' name='[tmn:complete_date:qk]' pivot='key' type='quantitative' />
+            <column aggregation='CountD' caption='Zonal Winds' datatype='real' datatype-customized='true' name='[zonal_winds]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]' field-type='quantitative' max='1663' min='0' range-type='fixed' scope='rows' type='space' />
+            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]' scope='rows' value='Número de Alertas' />
+            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[tmn:complete_date:qk]' scope='cols' value='Fecha' />
+            <format attr='width' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]' value='68' />
+            <encoding attr='space' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]' field-type='quantitative' fold='true' scope='rows' type='space' />
+            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]' scope='rows' value='Número de eventos extremos' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#e15759' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='985' />
+                <format attr='maxwidth' value='985' />
+                <format attr='minheight' value='430' />
+                <format attr='maxheight' value='430' />
+                <format attr='aspect' value='0' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#f28e2b' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-color' value='#e15759' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk] + [federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk])</rows>
+        <cols>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[tmn:complete_date:qk]</cols>
+      </table>
+      <simple-id uuid='{FBC09C56-451A-4322-A9AC-1ADE9652DA27}' />
+    </worksheet>
     <worksheet name='Relación entre Temperatura de Mar y Viento Máximo'>
+      <layout-options>
+        <caption>
+          <formatted-text />
+        </caption>
+      </layout-options>
       <table>
         <view>
           <datasources>
@@ -707,8 +802,8 @@
           </datasources>
           <datasource-dependencies datasource='federated.0pqz8d11bxu1uk1a8ra3l1jztibx'>
             <column-instance column='[sst_avg_fortnight]' derivation='None' name='[none:sst_avg_fortnight:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[sst_avg_fortnight]' derivation='None' name='[none:sst_avg_fortnight:qk]' pivot='key' type='quantitative' />
             <column-instance column='[sst_today]' derivation='None' name='[none:sst_today:ok]' pivot='key' type='ordinal' />
-            <column-instance column='[sst_today]' derivation='None' name='[none:sst_today:qk]' pivot='key' type='quantitative' />
             <column-instance column='[wind_max_fortnight]' derivation='None' name='[none:wind_max_fortnight:qk]' pivot='key' type='quantitative' />
             <column caption='Sst Avg Fortnight' datatype='real' datatype-customized='true' name='[sst_avg_fortnight]' role='dimension' type='ordinal' />
             <column caption='Sst Today' datatype='real' datatype-customized='true' name='[sst_today]' role='dimension' type='ordinal' />
@@ -717,20 +812,24 @@
           <filter class='categorical' column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_today:ok]'>
             <groupfilter function='level-members' level='[none:sst_today:ok]' user:ui-manual-selection='true' user:ui-manual-selection-is-empty='true' user:ui-marker='enumerate' />
           </filter>
+          <filter class='quantitative' column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:wind_max_fortnight:qk]' included-values='non-null' />
           <slices>
             <column>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_today:ok]</column>
+            <column>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:wind_max_fortnight:qk]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='axis'>
-            <encoding attr='space' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_today:qk]' field-type='quantitative' max='32.0' min='16.0' range-type='fixed' scope='cols' type='space' />
             <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:wind_max_fortnight:qk]' scope='rows' value='Viento Máximo (m/s)' />
-            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_today:qk]' scope='cols' value='Temperatura del Mar (ºC)' />
+            <format attr='title' class='0' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_avg_fortnight:qk]' scope='cols' value='Temperatura del Mar (media 15 días) en ºC' />
+          </style-rule>
+          <style-rule element='table'>
+            <format attr='show-null-value-warning' value='false' />
           </style-rule>
         </style>
         <panes>
-          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
+          <pane id='3' selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -746,16 +845,73 @@
           </pane>
         </panes>
         <rows>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:wind_max_fortnight:qk]</rows>
-        <cols>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_today:qk]</cols>
+        <cols>[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:sst_avg_fortnight:qk]</cols>
       </table>
       <simple-id uuid='{C6BA50BF-DAFB-4B38-968D-F48A2C0844A1}' />
     </worksheet>
   </worksheets>
   <dashboards>
-    <dashboard enable-sort-zone-taborder='true' name='Dashboard 1'>
+    <dashboard enable-sort-zone-taborder='true' name='Dashboard Comercial'>
       <style />
       <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
-      <zones />
+      <zones>
+        <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
+          <zone h='97922' id='20' param='horz' type-v2='layout-flow' w='97538' x='1231' y='1039'>
+            <zone fixed-size='160' h='97922' id='19' is-fixed='true' param='vert' type-v2='layout-flow' w='97538' x='1231' y='1039' />
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+        <zone h='56240' id='12' is-centered='0' is-scaled='1' param='C:/Users/naila/Downloads/final_project_elnino/doble_curvas_alertas.png' type-v2='bitmap' w='108923' x='-46000' y='57861' />
+        <zone h='44408' id='13' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' w='91538' x='-43692' y='11994'>
+          <layout-cache minheight='367' type-h='scalable' type-w='fixed' />
+        </zone>
+        <zone h='11669' id='10' name='KPI Alerta por Intensidad del Viento ' w='46923' x='-42923' y='0' />
+        <zone h='57861' id='18' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global' w='49077' x='51846' y='1459'>
+          <layout-cache fixed-size-h='416' type-h='fixed' type-w='fixed' />
+        </zone>
+        <zone h='10535' id='16' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' pane-specification-id='2' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='34923' x='11846' y='4052' />
+        <zone h='9400' id='21' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global' pane-specification-id='0' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:ok]' type-v2='color' w='31077' x='94308' y='11183' />
+        <zone h='3890' id='17' type-v2='dashboard-object' w='3692' x='44154' y='53809'>
+          <button action='' active-visual-state-index='1'>
+            <toggle-action>tabdoc:toggle-button-click-action window-id=&quot;{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}&quot; zone-id=&quot;17&quot; zone-ids=[9]</toggle-action>
+            <button-visual-state />
+            <button-visual-state />
+          </button>
+        </zone>
+        <zone h='54781' hidden-by-user='true' id='9' name='Relación entre Temperatura de Mar y Viento Máximo' show-caption='true' w='96154' x='-48000' y='162'>
+          <layout-cache minheight='240' type-h='scalable' type-w='fixed' />
+        </zone>
+        <zone h='37925' id='22' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' w='73385' x='66462' y='61588'>
+          <layout-cache minheight='199' type-h='scalable' type-w='fixed' />
+        </zone>
+        <zone h='9400' id='23' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' pane-specification-id='1' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='31846' x='94923' y='65964' />
+        <zone h='33225' id='24' type-v2='empty' w='33231' x='6923' y='9724' />
+        <zone forceUpdate='true' h='33387' id='25' type-v2='text' w='29231' x='100769' y='22528'>
+          <formatted-text>
+            <run>- KPIs </run>
+            <run bold='true' fontcolor='#e15759'>Alerta Intensidad del Viento</run>
+            <run> y Alerta </run>
+            <run bold='true' fontcolor='#e15759'>Temperatura Elevada </run>
+            <run bold='true'>muy importantes</run>
+            <run>:&#10;&#10;</run>
+            <run bold='true'>- Cambio de rumbo del viento -&gt;</run>
+            <run> elevación de la temperatura del mar
+
+</run>
+            <run bold='true'>- Elevación de la temperatura del mar -&gt;</run>
+            <run>Æ </run>
+            <run bold='true'>aumento </run>
+            <run>del</run>
+            <run bold='true'>Æ </run>
+            <run bold='true' fontcolor='#e15759'>Riesgo de EventosExtremos</run>
+          </formatted-text>
+        </zone>
+      </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='700' minheight='700' sizing-mode='vscroll' />
@@ -775,7 +931,7 @@
       <simple-id uuid='{29EB19C3-87BD-4F28-89E8-9CA9BB39A2B5}' />
     </dashboard>
   </dashboards>
-  <windows source-height='30'>
+  <windows pres-mode='true' source-height='30'>
     <window class='worksheet' name='Relación entre Temperatura de Mar y Viento Máximo'>
       <cards>
         <edge name='left'>
@@ -799,7 +955,7 @@
       </cards>
       <simple-id uuid='{7BD693B7-A916-42F2-9F08-7DDB5D6C41ED}' />
     </window>
-    <window class='worksheet' name='Análisis de Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
+    <window class='worksheet' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -830,7 +986,7 @@
       </viewpoint>
       <simple-id uuid='{DEECC82B-59E7-4592-B4F2-B71EE5A8B7E0}' />
     </window>
-    <window class='worksheet' name=' Impacto de Eventos Extremos en el Histórico Global\n(Cruce de Temperatura &gt; 28°C y Viento Zonal &gt; 0 m/s)'>
+    <window class='worksheet' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -858,10 +1014,10 @@
       </cards>
       <simple-id uuid='{98261C75-1FD3-403E-B456-C6E56CCAFA7F}' />
     </window>
-    <window class='worksheet' name='Alerta por temperatura elevada'>
+    <window class='worksheet' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos'>
       <cards>
         <edge name='left'>
-          <strip size='160'>
+          <strip size='100'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -874,19 +1030,19 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='31'>
+          <strip size='2147483647'>
             <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='175'>
+            <card pane-specification-id='1' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type='color' />
           </strip>
         </edge>
       </cards>
       <simple-id uuid='{341214AC-E415-4616-8397-FEB3232F4892}' />
     </window>
-    <window class='dashboard' name='Dashboard 1'>
-      <viewpoints />
-      <active id='-1' />
-      <simple-id uuid='{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}' />
-    </window>
-    <window class='worksheet' maximized='true' name='Hoja 5'>
+    <window class='worksheet' name='KPI Alerta por Intensidad del Viento '>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -911,6 +1067,30 @@
         <floating-toolbar-visibility value='1' />
       </viewpoint>
       <simple-id uuid='{A39B3A02-637E-48BC-89A6-15C019A2D707}' />
+    </window>
+    <window class='dashboard' maximized='true' name='Dashboard Comercial'>
+      <viewpoints>
+        <viewpoint name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
+          <zoom type='entire-view' />
+          <floating-toolbar-visibility value='1' />
+        </viewpoint>
+        <viewpoint name='KPI Alerta por Intensidad del Viento '>
+          <zoom type='fit-width' />
+          <floating-toolbar-visibility value='1' />
+        </viewpoint>
+        <viewpoint name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos'>
+          <zoom type='entire-view' />
+        </viewpoint>
+        <viewpoint name='Relación entre Temperatura de Mar y Viento Máximo'>
+          <zoom type='entire-view' />
+        </viewpoint>
+      </viewpoints>
+      <active id='25' />
+      <device-preview visible='true' />
+      <simple-id uuid='{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}' />
     </window>
   </windows>
 </workbook>
