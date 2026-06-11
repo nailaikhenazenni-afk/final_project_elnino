@@ -599,6 +599,10 @@
           <style-rule element='label'>
             <format attr='font-size' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[std:zonal_winds:qk]' value='11' />
           </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='font-size' value='11' />
+            <format attr='font-weight' value='bold' />
+          </style-rule>
           <style-rule element='axis-title'>
             <format attr='color' field='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[std:zonal_winds:qk]' value='#000000' />
           </style-rule>
@@ -698,6 +702,15 @@
       <simple-id uuid='{74871561-0E9A-4B62-906F-90C2346328D9}' />
     </worksheet>
     <worksheet name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>&lt;</run>
+            <run>Sheet Name</run>
+            <run>&gt;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
           <datasources>
@@ -721,6 +734,12 @@
             <column-instance column='[complete_date]' derivation='Month-Trunc' name='[tmn:complete_date:qk]' pivot='key' type='quantitative' />
             <column aggregation='CountD' caption='Zonal Winds' datatype='real' datatype-customized='true' name='[zonal_winds]' role='measure' type='quantitative' />
           </datasource-dependencies>
+          <manual-sort column='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1818328026869763:qk]&quot;</bucket>
+              <bucket>&quot;[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[sum:Calculation_1842791846010880:qk]&quot;</bucket>
+            </dictionary>
+          </manual-sort>
           <aggregation value='true' />
         </view>
         <style>
@@ -855,61 +874,54 @@
       <style />
       <size maxheight='860' maxwidth='650' minheight='560' minwidth='420' />
       <zones>
-        <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='97922' id='20' param='horz' type-v2='layout-flow' w='97538' x='1231' y='1039'>
-            <zone fixed-size='160' h='97922' id='19' is-fixed='true' param='vert' type-v2='layout-flow' w='97538' x='1231' y='1039' />
-          </zone>
-          <zone-style>
-            <format attr='border-color' value='#000000' />
-            <format attr='border-style' value='none' />
-            <format attr='border-width' value='0' />
-            <format attr='margin' value='8' />
-          </zone-style>
-        </zone>
-        <zone h='56240' id='12' is-centered='0' is-scaled='1' param='C:/Users/naila/Downloads/final_project_elnino/doble_curvas_alertas.png' type-v2='bitmap' w='108923' x='-46000' y='57861' />
-        <zone h='44408' id='13' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' w='91538' x='-43692' y='11994'>
+        <zone h='44408' hidden-by-user='true' id='13' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' w='91538' x='-43692' y='11994'>
           <layout-cache minheight='367' type-h='scalable' type-w='fixed' />
         </zone>
         <zone h='11669' id='10' name='KPI Alerta por Intensidad del Viento ' w='46923' x='-42923' y='0' />
-        <zone h='57861' id='18' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global' w='49077' x='51846' y='1459'>
+        <zone h='50405' id='18' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global' w='44000' x='51846' y='1459'>
           <layout-cache fixed-size-h='416' type-h='fixed' type-w='fixed' />
         </zone>
-        <zone h='10535' id='16' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' pane-specification-id='2' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='34923' x='11846' y='4052' />
+        <zone h='10535' hidden-by-user='true' id='16' name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura' pane-specification-id='2' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='34923' x='11846' y='4052' />
         <zone h='9400' id='21' name='KPI Eventos Extremos: Número de Eventos Extremos en el Histórico Global' pane-specification-id='0' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[none:Calculation_1842791846010880:ok]' type-v2='color' w='31077' x='94308' y='11183' />
-        <zone h='3890' id='17' type-v2='dashboard-object' w='3692' x='44154' y='53809'>
-          <button action='' active-visual-state-index='1'>
+        <zone h='3890' id='17' type-v2='dashboard-object' w='3692' x='49692' y='52026'>
+          <button action=''>
             <toggle-action>tabdoc:toggle-button-click-action window-id=&quot;{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}&quot; zone-id=&quot;17&quot; zone-ids=[9]</toggle-action>
             <button-visual-state />
             <button-visual-state />
           </button>
         </zone>
-        <zone h='54781' hidden-by-user='true' id='9' name='Relación entre Temperatura de Mar y Viento Máximo' show-caption='true' w='96154' x='-48000' y='162'>
+        <zone h='54943' id='9' name='Relación entre Temperatura de Mar y Viento Máximo' show-caption='true' w='96154' x='-46923' y='10049'>
           <layout-cache minheight='240' type-h='scalable' type-w='fixed' />
         </zone>
-        <zone h='37925' id='22' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' w='73385' x='66462' y='61588'>
+        <zone h='47164' id='22' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' w='74000' x='53231' y='53323'>
           <layout-cache minheight='199' type-h='scalable' type-w='fixed' />
         </zone>
-        <zone h='9400' id='23' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' pane-specification-id='1' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='31846' x='94923' y='65964' />
-        <zone h='33225' id='24' type-v2='empty' w='33231' x='6923' y='9724' />
-        <zone forceUpdate='true' h='33387' id='25' type-v2='text' w='29231' x='100769' y='22528'>
+        <zone h='10211' id='23' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos' pane-specification-id='1' param='[federated.0pqz8d11bxu1uk1a8ra3l1jztibx].[:Measure Names]' type-v2='color' w='32923' x='70308' y='58185' />
+        <zone forceUpdate='true' h='35818' id='25' type-v2='text' w='31692' x='97385' y='20259'>
           <formatted-text>
-            <run>- KPIs </run>
-            <run bold='true' fontcolor='#e15759'>Alerta Intensidad del Viento</run>
-            <run> y Alerta </run>
-            <run bold='true' fontcolor='#e15759'>Temperatura Elevada </run>
-            <run bold='true'>muy importantes</run>
-            <run>:&#10;&#10;</run>
-            <run bold='true'>- Cambio de rumbo del viento -&gt;</run>
-            <run> elevación de la temperatura del mar
-
-</run>
-            <run bold='true'>- Elevación de la temperatura del mar -&gt;</run>
-            <run>Æ </run>
-            <run bold='true'>aumento </run>
-            <run>del</run>
-            <run bold='true'>Æ </run>
-            <run bold='true' fontcolor='#e15759'>Riesgo de EventosExtremos</run>
+            <run fontcolor='#000000' fontsize='11'>- Una probabilidad de ocurrencia </run>
+            <run bold='true' fontcolor='#e15759' fontsize='11'>cercana al 11%</run>
+            <run fontcolor='#000000' fontsize='11'> justifica la necesidad comercial de implementar sistemas de monitorización y alertas predictivas</run>
+            <run>Æ&#10;</run>
+            <run fontcolor='#000000' fontsize='11'>-  Estas ventanas críticas comprometen la estabilidad financiera de la flota pesquera </run>
+            <run bold='true' fontcolor='#e15759' fontsize='11'>1 de cada 10 días</run>
+            <run fontcolor='#000000' fontsize='11'>.</run>
           </formatted-text>
+        </zone>
+        <zone forceUpdate='true' h='40357' id='26' is-scaled='1' param='C:/Users/naila/Downloads/final_project_elnino/presentacion/imagenes/doble_curvas_alertas.png' type-v2='bitmap' w='90308' x='-42923' y='60292' />
+        <zone h='3890' id='27' type-v2='dashboard-object' w='3692' x='47846' y='11994'>
+          <button action='' active-visual-state-index='1'>
+            <toggle-action>tabdoc:toggle-button-click-action window-id=&quot;{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}&quot; zone-id=&quot;27&quot; zone-ids=[13]</toggle-action>
+            <button-visual-state />
+            <button-visual-state />
+          </button>
+        </zone>
+        <zone h='3890' id='28' type-v2='dashboard-object' w='3692' x='46769' y='4052'>
+          <button action='' active-visual-state-index='1'>
+            <toggle-action>tabdoc:toggle-button-click-action window-id=&quot;{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}&quot; zone-id=&quot;28&quot; zone-ids=[16]</toggle-action>
+            <button-visual-state />
+            <button-visual-state />
+          </button>
         </zone>
       </zones>
       <devicelayouts>
@@ -931,7 +943,7 @@
       <simple-id uuid='{29EB19C3-87BD-4F28-89E8-9CA9BB39A2B5}' />
     </dashboard>
   </dashboards>
-  <windows pres-mode='true' source-height='30'>
+  <windows source-height='30'>
     <window class='worksheet' name='Relación entre Temperatura de Mar y Viento Máximo'>
       <cards>
         <edge name='left'>
@@ -1017,7 +1029,7 @@
     <window class='worksheet' name='KPIs Alerta por Temperatura Elevada VS Eventos Extremos'>
       <cards>
         <edge name='left'>
-          <strip size='100'>
+          <strip size='300'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -1042,7 +1054,7 @@
       </cards>
       <simple-id uuid='{341214AC-E415-4616-8397-FEB3232F4892}' />
     </window>
-    <window class='worksheet' name='KPI Alerta por Intensidad del Viento '>
+    <window class='worksheet' maximized='true' name='KPI Alerta por Intensidad del Viento '>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -1068,7 +1080,7 @@
       </viewpoint>
       <simple-id uuid='{A39B3A02-637E-48BC-89A6-15C019A2D707}' />
     </window>
-    <window class='dashboard' maximized='true' name='Dashboard Comercial'>
+    <window class='dashboard' name='Dashboard Comercial'>
       <viewpoints>
         <viewpoint name='Análisis  KPI Alerta Temprana: Dinámica Cruzada Viento-Temperatura'>
           <zoom type='entire-view' />
@@ -1088,7 +1100,7 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='25' />
+      <active id='26' />
       <device-preview visible='true' />
       <simple-id uuid='{EC48ECD3-A72F-4ADF-83D4-F65DA7881DC9}' />
     </window>
